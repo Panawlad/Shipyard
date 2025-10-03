@@ -94,3 +94,38 @@ a { text-decoration: none; }
 @utility text-brand {
   color: var(--brand-neon);
 }
+/* --- Fix: dropdown de <select> en tema oscuro --- */
+@layer base {
+  /* Color del campo en reposo/en foco (no la lista) */
+  select {
+    color: var(--brand-light);
+    background-color: transparent; /* tu card ya pone el fondo */
+  }
+  select:focus {
+    outline: none;
+    border-color: color-mix(in oklab, var(--brand-neon) 40%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--brand-neon) 25%, transparent);
+  }
+
+  /* Color de la LISTA desplegable nativa */
+  option,
+  optgroup {
+    background-color: var(--brand-dark);   /* fondo oscuro del menú */
+    color: var(--brand-light);              /* texto claro */
+  }
+
+  /* Seleccionado / hover en la lista (soporte varía por navegador) */
+  option:checked,
+  option:hover {
+    background-color: color-mix(in oklab, var(--brand-neon) 12%, var(--brand-dark));
+    color: var(--brand-light);
+  }
+}
+
+/* WebKit: asegura que respete nuestros estilos */
+@supports (-webkit-appearance: none) {
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
