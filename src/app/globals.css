@@ -1,26 +1,96 @@
+/* Tailwind v4 */
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ===== Ajustes globales ===== */
+:root { color-scheme: dark; }
+a { text-decoration: none; }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* Variables de marca */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --brand-neon: #00F5A0;
+    --brand-dark: #0C1F1C;
+    --brand-charcoal: #101010;
+    --brand-light: #F5F5F5;
+  }
+
+  body {
+    background-color: var(--brand-dark);
+    color: var(--brand-light);
+    font-family: Inter, system-ui, sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ===== Fondo hero (Shipyard) ===== */
+.bg-hero {
+  background:
+    radial-gradient(900px 480px at 50% 0%, rgba(0,245,160,0.10), transparent 60%),
+    radial-gradient(700px 420px at 85% 0%, rgba(0,245,160,0.07), transparent 60%),
+    linear-gradient(180deg, var(--brand-dark) 0%, var(--brand-dark) 50%, var(--brand-dark) 100%);
+}
+
+/* ===== Utilidades personalizadas (Tailwind v4 usa @utility) ===== */
+
+/* Tarjeta oscura con borde y sombra */
+@utility card {
+  @apply rounded-2xl border backdrop-blur p-8;
+  background: color-mix(in oklab, var(--brand-charcoal) 92%, transparent);
+  border-color: rgba(255,255,255,0.10);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* Pastilla en color de marca */
+@utility pill {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium;
+  border: 1px solid color-mix(in oklab, var(--brand-neon) 20%, transparent);
+  background: color-mix(in oklab, var(--brand-neon) 12%, transparent);
+  color: color-mix(in oklab, var(--brand-neon) 90%, white);
+}
+
+/* Botón base */
+@utility btn {
+  @apply inline-flex items-center justify-center px-5 py-3 rounded-xl font-semibold transition;
+}
+
+/* Botón fantasma (secundario) */
+@utility btn-ghost {
+  @apply btn;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.10);
+  color: white;
+}
+/* Hover del botón fantasma (como regla normal, no @utility) */
+.btn-ghost:hover {
+  @apply bg-white/10;
+}
+
+/* Botón principal con glow de marca */
+@utility btn-neon {
+  @apply btn text-black;
+  background: var(--brand-neon);
+  box-shadow: 0 8px 24px rgba(0,245,160,0.35);
+}
+/* Hover del botón neón */
+.btn-neon:hover {
+  background: color-mix(in oklab, var(--brand-neon) 75%, black);
+}
+
+/* Alias para compatibilidad con lo que tenías */
+@utility btn-emerald {
+  @apply btn-neon;
+}
+
+/* Contenedor consistente (centra y unifica ancho) */
+@utility wrap {
+  @apply mx-auto w-full max-w-[1200px] px-6;
+}
+
+/* Bloque centrado y con ancho contenido (para el texto del hero) */
+@utility center-block {
+  @apply mx-auto max-w-[820px];
+}
+
+/* Texto/acento de marca */
+@utility text-brand {
+  color: var(--brand-neon);
 }
