@@ -34,7 +34,7 @@ export const PROFILES: Profile[] = [
   {
     name: "Bob Williams",
     handle: "crypto_marketer",
-    role: "Marketing",
+    role: "Marketer",
     bio: "Growth marketer con 5+ años en cripto. Ha lanzado 10+ proyectos exitosos.",
     tags: ["Growth Marketing", "Community", "Social Media"],
     location: "London, UK",
