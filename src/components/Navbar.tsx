@@ -1,25 +1,52 @@
-import Link from "next/link";
+"use client";
 
-export default function Navbar() {
+import Link from "next/link";
+import Image from "next/image";
+import { useSession, signOut } from "next-auth/react";
+
+type Props = {
+  /** Oculta los botones de Log In / Sign Up / Ver directorio */
+  hideLinks?: boolean;
+};
+
+export default function Navbar({ hideLinks = false }: Props) {
+  const { status } = useSession(); // "authenticated" | "unauthenticated" | "loading"
+
   return (
-    <header className="w-full max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="h-9 w-9 rounded-xl bg-emerald-500/20 border border-emerald-400/30 grid place-items-center">
-          <span className="text-emerald-400 text-xl">⚡</span>
+    <header className="wrap py-5 flex items-center justify-between">
+      <Link href="/" className="flex items-center gap-3">
+        <Image
+          src="/brand/shipyard-logo.svg"
+          alt="Shipyard"
+          width={120}
+          height={28}
+          priority
+          className="h-7 w-auto"
+        />
+        <span className="sr-only">Shipyard</span>
+      </Link>
+
+      {/* Links a la derecha */}
+      {!hideLinks && (
+        <div className="flex items-center gap-2">
+          {status === "authenticated" ? (
+            <>
+              <Link href="/profile/me" className="btn-ghost">Mi Perfil</Link>
+              <button
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="btn-ghost"
+              >
+                Salir
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/auth/login" className="btn-ghost">Log In</Link>
+              <Link href="/auth/signup" className="btn-neon">Sign Up</Link>
+            </>
+          )}
         </div>
-        <Link href="/" className="font-semibold tracking-tight">Crypto Hub</Link>
-      </div>
-      <div className="flex items-center gap-3">
-        <Link href="/directory" className="hidden md:inline-block text-sm px-4 py-2 rounded-xl border border-white/10 hover:bg-white/5 transition">
-          Ver Directorio
-        </Link>
-        <Link href="/auth/login" className="text-sm px-4 py-2 rounded-xl border border-white/10 hover:bg-white/5 transition">
-          Log In
-        </Link>
-        <Link href="/auth/signup" className="text-sm px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 transition">
-          Sign Up
-        </Link>
-      </div>
+      )}
     </header>
   );
 }

@@ -7,48 +7,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            String   @id @default(cuid())
-  name          String?
-  email         String   @unique
-  emailVerified DateTime?
-  password      String?  // hash bcrypt
-  image         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+/* ========== App Models ========== */
 
-  profile       Profile?
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String        @unique
+  emailVerified DateTime?
+  password      String?       // hash bcrypt
+  image         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relaciones
+  profile       Profile?      // 1:1 (un perfil por usuario)
   coverLetter   CoverLetter?
   accounts      Account[]
   sessions      Session[]
 }
 
 model Profile {
-  id         String   @id @default(cuid())
-  userId     String   @unique
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String     @id @default(cuid())
 
-  // Basics
-  username   String   @unique
-  fullName   String
-  avatarUrl  String?  @db.Text
-  bio        String   @db.Text
+  // Relación 1:1 => el lado “definidor” debe ser unique
+  userId     String?    @unique
+  user       User?      @relation(fields: [userId], references: [id])
 
-  // Select
-  category   Category
+  // Campos del perfil
+  username   String     // -> handle
+  fullName   String     // -> name
+  avatarUrl  String     // -> avatar
+  category   Category   @default(Developer) // -> role
+  skills     String[]   // -> tags (array TEXT[])
 
-  // Extras
-  skills     String?      // CSV
-  location   String
-  x          String?      // twitter / X
+  bio        String?
+  location   String?
+  available  Boolean    @default(false)
+
   linkedin   String?
+  x          String?
   calendly   String?
   telegram   String?
   discord    String?
-  available  Boolean  @default(false)
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
 enum Category {
@@ -60,16 +63,16 @@ enum Category {
   Marketer
 }
 
-
 model CoverLetter {
   id        String   @id @default(cuid())
   content   String
+  userId    String   @unique     // una carta por usuario
   user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique // <= UNA por usuario
   updatedAt DateTime @updatedAt
 }
 
-// Modelos NextAuth
+/* ========== NextAuth Models ========== */
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
