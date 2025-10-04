@@ -2,16 +2,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-/** Roles que tu UI entiende */
-type Role =
-  | "Builder"
-  | "Founder"
-  | "Developer"
-  | "Designer"
-  | "Investor"
-  | "Marketer";
+type Role = "Builder" | "Founder" | "Developer" | "Designer" | "Investor" | "Marketer"| "ContentCreator"| "Other";
 
-/** Row seleccionado desde Prisma (coincide con el select de abajo) */
 type Row = {
   username:  string | null;
   fullName:  string | null;
@@ -22,6 +14,8 @@ type Row = {
   bio:       string | null;
   location:  string | null;
   available: boolean | null;
+  hiring:    boolean | null;     // ✅
+  investing: boolean | null;     // ✅
 
   linkedin:  string | null;
   x:         string | null;
@@ -30,7 +24,6 @@ type Row = {
   discord:   string | null;
 };
 
-/** Shape que consume el front */
 type ApiProfile = {
   handle: string;
   name: string;
@@ -41,6 +34,8 @@ type ApiProfile = {
   bio?: string;
   location?: string;
   available?: boolean;
+  hiring?: boolean;      // ✅
+  investing?: boolean;   // ✅
 
   linkedin?: string;
   x?: string;
@@ -50,18 +45,13 @@ type ApiProfile = {
 };
 
 function toRole(v: string | null): Role {
-  const r = (v ?? "Developer") as Role;
-  return r;
+  return (v ?? "Developer") as Role;
 }
-
 function toTags(v: string[] | string | null): string[] {
   if (Array.isArray(v)) return v.filter(Boolean);
-  if (typeof v === "string") {
-    return v.split(",").map((s) => s.trim()).filter(Boolean);
-  }
+  if (typeof v === "string") return v.split(",").map(s => s.trim()).filter(Boolean);
   return [];
 }
-
 function errMsg(e: unknown) {
   if (e instanceof Error) return e.message;
   try { return JSON.stringify(e); } catch { return String(e); }
@@ -81,6 +71,8 @@ export async function GET() {
         bio: true,
         location: true,
         available: true,
+        hiring: true,       // ✅
+        investing: true,    // ✅
 
         linkedin: true,
         x: true,
@@ -90,22 +82,24 @@ export async function GET() {
       },
     });
 
-    const items: ApiProfile[] = rows.map((p: Row): ApiProfile => ({
-      handle:   p.username ?? "",
-      name:     p.fullName ?? "",
-      avatar:   p.avatarUrl ?? "",
-      role:     toRole(p.category),
-      tags:     toTags(p.skills),
+    const items: ApiProfile[] = rows.map((p): ApiProfile => ({
+      handle:    p.username ?? "",
+      name:      p.fullName ?? "",
+      avatar:    p.avatarUrl ?? "",
+      role:      toRole(p.category),
+      tags:      toTags(p.skills),
 
-      bio:      p.bio ?? undefined,
-      location: p.location ?? undefined,
-      available:p.available ?? undefined,
+      bio:       p.bio ?? undefined,
+      location:  p.location ?? undefined,
+      available: p.available ?? undefined,
+      hiring:    p.hiring ?? undefined,      // ✅
+      investing: p.investing ?? undefined,   // ✅
 
-      linkedin: p.linkedin ?? undefined,
-      x:        p.x ?? undefined,
-      calendly: p.calendly ?? undefined,
-      telegram: p.telegram ?? undefined,
-      discord:  p.discord ?? undefined,
+      linkedin:  p.linkedin ?? undefined,
+      x:         p.x ?? undefined,
+      calendly:  p.calendly ?? undefined,
+      telegram:  p.telegram ?? undefined,
+      discord:   p.discord ?? undefined,
     }));
 
     return NextResponse.json({ items });

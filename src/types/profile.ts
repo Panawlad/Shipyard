@@ -17,6 +17,8 @@ export type Profile = {
   location: string;
   tags: string[];        // viene de "skills" (CSV → array)
   available: boolean;
+  hiring: boolean
+  investing: boolean
 
   // enlaces opcionales
   linkedin?: string;

@@ -102,7 +102,7 @@ export default function DirectoryPage() {
       <main className="max-w-7xl mx-auto px-6 pb-24 relative">
         <div className="pt-8 pb-6">
           <h2 className="text-3xl font-bold">
-            Crypto Hub <span className="text-[color:var(--brand-neon)]">Directory</span>
+            Shipyard <span className="text-[color:var(--brand-neon)]">HUB</span>
           </h2>
           <p className="text-white/60">
             Descubre y conecta con profesionales cripto.
@@ -137,19 +137,25 @@ export default function DirectoryPage() {
                 Builders
               </option>
               <option value="Developer" className="bg-[color:var(--brand-dark)]">
-                Developers
+                Desarrollador
               </option>
               <option value="Designer" className="bg-[color:var(--brand-dark)]">
-                Designers
+                Diseñadores
               </option>
               <option value="Founder" className="bg-[color:var(--brand-dark)]">
                 Founders
               </option>
               <option value="Investor" className="bg-[color:var(--brand-dark)]">
-                Investors
+                Inversionistas
               </option>
               <option value="Marketer" className="bg-[color:var(--brand-dark)]">
                 Marketers
+              </option>
+              <option value="ContentCreator" className="bg-[color:var(--brand-dark)]">
+                Creador de contenido
+              </option>
+              <option value="Other" className="bg-[color:var(--brand-dark)]">
+                Otro
               </option>
             </select>
             {/* flecha */}
@@ -275,7 +281,9 @@ export default function DirectoryPage() {
                       <a
                         href={selected.linkedin}
                         target="_blank"
-                        className="underline text-white/90"
+                        className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg
+                                   bg-[color:var(--brand-neon)]/15 border border-[color:var(--brand-neon)]/30
+                                   text-[color:var(--brand-neon)] hover:bg-[color:var(--brand-neon)]/25"
                       >
                         LinkedIn
                       </a>
@@ -284,7 +292,9 @@ export default function DirectoryPage() {
                       <a
                         href={selected.x}
                         target="_blank"
-                        className="underline text-white/90"
+                        className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg
+                                   bg-[color:var(--brand-neon)]/15 border border-[color:var(--brand-neon)]/30
+                                   text-[color:var(--brand-neon)] hover:bg-[color:var(--brand-neon)]/25"
                       >
                         X (Twitter)
                       </a>
@@ -297,7 +307,7 @@ export default function DirectoryPage() {
                                    bg-[color:var(--brand-neon)]/15 border border-[color:var(--brand-neon)]/30
                                    text-[color:var(--brand-neon)] hover:bg-[color:var(--brand-neon)]/25"
                       >
-                        Abrir Calendly
+                        Calendly
                       </a>
                     )}
                     {selected.telegram && (

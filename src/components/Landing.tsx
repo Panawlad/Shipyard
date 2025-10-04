@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Users, Zap, Globe, TrendingUp, LogIn } from "lucide-react";
-import CreateProfileCTA from "@/components/CreateProfileCTA";
 
 export default function Landing() {
   return (
@@ -58,19 +57,19 @@ export default function Landing() {
       <header className="wrap text-center pt-8 pb-12 relative z-10">
         <div className="pill mx-auto mb-6">
           <Zap className="w-4 h-4" />
-          Join the Crypto Revolution
+          Powered by Shipyard MX
         </div>
 
         <div className="center-block">
           <h1 className="font-extrabold text-[56px] md:text-[68px] leading-[1.05] tracking-[-0.02em]">
-            Connect with <span className="text-brand">Crypto</span>
+            Conecta con <span className="text-brand">Profesionales</span>
           </h1>
           <h2 className="font-extrabold text-[56px] md:text-[68px] leading-[1.03] -mt-2 tracking-[-0.02em]">
-            <span className="text-brand">Professionals</span>
+            <span className="text-brand"></span>
           </h2>
           <p className="mt-6 text-lg md:text-xl text-white/70">
-            The ultimate networking hub for builders, founders, developers, and investors in the crypto space.
-            Find collaborators, discover opportunities, and grow your network.
+          El centro de networking definitivo para creadores, fundadores, desarrolladores e inversores en el sector cripto.
+          Encuentra colaboradores, descubre oportunidades y amplía tu red.
           </p>
         </div>
       </header>
@@ -81,7 +80,7 @@ export default function Landing() {
           <div className="w-12 h-12 rounded-xl bg-[color:var(--brand-neon)]/10 grid place-items-center mb-4">
             <Users className="w-6 h-6 text-[color:var(--brand-neon)]" />
           </div>
-          <h3 className="font-semibold text-lg mb-2">Connect with Experts</h3>
+          <h3 className="font-semibold text-lg mb-2">Conecta con expertos</h3>
           <p className="text-white/70">
             Accede a un directorio curado de profesionales verificados en todas las disciplinas.
           </p>
@@ -108,21 +107,10 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="wrap pb-20">
-        <div className="card text-center py-12">
-          <h3 className="text-3xl font-bold mb-3">¿Listo para conectar?</h3>
-          <p className="text-white/70 text-lg center-block mb-8">
-            Crea tu perfil en minutos y empieza a hacer networking con profesionales cripto.
-          </p>
-          <CreateProfileCTA />
-        </div>
-      </section>
-
       {/* FOOTER */}
-      <footer className="border-t border-white/10 relative z-10">
+      <footer className="border-t border-white/10 relative z-10 mt-75">
         <div className="wrap py-8 text-center text-white/60">
-          © {new Date().getFullYear()} Crypto Hub
+          © {new Date().getFullYear()} Solana Foundation Initiative
         </div>
       </footer>
     </div>

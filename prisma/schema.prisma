@@ -35,7 +35,7 @@ model Profile {
   user       User?      @relation(fields: [userId], references: [id])
 
   // Campos del perfil
-  username   String     // -> handle
+  username   String     @unique // -> handle
   fullName   String     // -> name
   avatarUrl  String     // -> avatar
   category   Category   @default(Developer) // -> role
@@ -44,6 +44,8 @@ model Profile {
   bio        String?
   location   String?
   available  Boolean    @default(false)
+  hiring     Boolean    @default(false)
+  investing  Boolean    @default(false)
 
   linkedin   String?
   x          String?
@@ -62,6 +64,8 @@ enum Category {
   Designer
   Investor
   Marketer
+  ContentCreator
+  Other
 }
 
 model CoverLetter {

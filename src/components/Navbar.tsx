@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 
 type Props = {
-  /** Oculta los botones de Log In / Sign Up / Ver directorio */
+  /** Oculta los botones de Log In / Sign Up / Mi Perfil */
   hideLinks?: boolean;
 };
 
@@ -14,7 +14,7 @@ export default function Navbar({ hideLinks = false }: Props) {
 
   return (
     <header className="wrap py-5 flex items-center justify-between">
-      <Link href="/" className="flex items-center gap-3">
+      <Link href="/" className="flex items-center gap-3" aria-label="Inicio">
         <Image
           src="/brand/shipyard-logo.svg"
           alt="Shipyard"
@@ -23,29 +23,35 @@ export default function Navbar({ hideLinks = false }: Props) {
           priority
           className="h-7 w-auto"
         />
-        <span className="sr-only">Shipyard</span>
       </Link>
 
-      {/* Links a la derecha */}
       {!hideLinks && (
-        <div className="flex items-center gap-2">
+        <nav className="flex items-center gap-2">
           {status === "authenticated" ? (
             <>
-              <Link href="/profile/me" className="btn-ghost">Mi Perfil</Link>
+              {/* Ir a la página de edición de perfil */}
+              <Link href="/profile" className="btn-ghost">
+                Mi Perfil
+              </Link>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
                 className="btn-ghost"
+                type="button"
               >
                 Salir
               </button>
             </>
           ) : (
             <>
-              <Link href="/auth/login" className="btn-ghost">Log In</Link>
-              <Link href="/auth/signup" className="btn-neon">Sign Up</Link>
+              <Link href="/auth/login" className="btn-ghost">
+                Log In
+              </Link>
+              <Link href="/auth/signup" className="btn-neon">
+                Sign Up
+              </Link>
             </>
           )}
-        </div>
+        </nav>
       )}
     </header>
   );
