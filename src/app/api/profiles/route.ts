@@ -1,6 +1,8 @@
 // src/app/api/profiles/route.ts
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 /** Roles que tu UI entiende */
 type Role =
@@ -47,12 +49,14 @@ const VALID_ROLES: ReadonlySet<Role> = new Set([
 function normalizeRole(input: unknown): Role {
   const raw = String(input ?? "").trim();
   const map: Record<string, Role> = {
+    // ES -> EN
     Desarrollador: "Developer",
     Diseñador: "Designer",
     Inversionista: "Investor",
     "Creador de contenido": "ContentCreator",
     "Creador de Contenido": "ContentCreator",
     Otro: "Other",
+    // EN passthrough
     Builder: "Builder",
     Founder: "Founder",
     Developer: "Developer",
@@ -87,7 +91,11 @@ function normalizeUrl(v: unknown): string | undefined {
 
 function errMsg(e: unknown) {
   if (e instanceof Error) return e.message;
-  try { return JSON.stringify(e); } catch { return String(e); }
+  try {
+    return JSON.stringify(e);
+  } catch {
+    return String(e);
+  }
 }
 
 function mapDbToApi(p: {
@@ -144,9 +152,18 @@ const SELECT = {
   discord: true,
 } as const;
 
-/* --------- CREAR --------- */
+/* --------------------------------------
+   CREAR (solo si no existe, ligado a userId)
+--------------------------------------- */
 export async function POST(req: Request) {
   try {
+    // Requiere sesión
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+    }
+    const userId = session.user.id;
+
     const body = (await req.json()) as Record<string, unknown>;
 
     const handle = String(body.username ?? "").trim();
@@ -154,15 +171,28 @@ export async function POST(req: Request) {
     if (!handle) return NextResponse.json({ error: "El username es obligatorio." }, { status: 400 });
     if (!name)   return NextResponse.json({ error: "El nombre es obligatorio." }, { status: 400 });
 
+    // Si ya tiene perfil, no crear otro
+    const already = await prisma.profile.findUnique({
+      where: { userId },
+      select: { userId: true },
+    });
+    if (already) {
+      return NextResponse.json(
+        { error: "Ya existe un perfil para este usuario. Usa PATCH para editar." },
+        { status: 409 }
+      );
+    }
+
     const created = await prisma.profile.create({
       data: {
+        userId,
         username: handle,
         fullName: name,
         avatarUrl: String(body.avatarUrl ?? "").trim(),
         category: normalizeRole(body.category),
         skills: normalizeTags(body.skills),
-        bio: String(body.bio ?? "").trim(),
-        location: String(body.location ?? "").trim(),
+        bio: String(body.bio ?? "").trim() || undefined,
+        location: String(body.location ?? "").trim() || undefined,
         available: Boolean(body.available),
         hiring: Boolean(body.hiring),
         investing: Boolean(body.investing),
@@ -181,23 +211,33 @@ export async function POST(req: Request) {
   }
 }
 
-/* --------- EDITAR (upsert por username) --------- */
+/* --------------------------------------
+   EDITAR (PATCH por userId de la sesión)
+--------------------------------------- */
 export async function PATCH(req: Request) {
   try {
+    // Requiere sesión
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+    }
+    const userId = session.user.id;
+
     const body = (await req.json()) as Record<string, unknown>;
 
     const handle = String(body.username ?? "").trim();
-    if (!handle) {
-      return NextResponse.json({ error: "El username es obligatorio." }, { status: 400 });
-    }
+    const name   = String(body.fullName ?? "").trim();
+    if (!handle) return NextResponse.json({ error: "El username es obligatorio." }, { status: 400 });
+    if (!name)   return NextResponse.json({ error: "El nombre es obligatorio." }, { status: 400 });
 
     const data = {
-      fullName: String(body.fullName ?? "").trim(),
+      username: handle,
+      fullName: name,
       avatarUrl: String(body.avatarUrl ?? "").trim(),
       category: normalizeRole(body.category),
       skills: normalizeTags(body.skills),
-      bio: String(body.bio ?? "").trim(),
-      location: String(body.location ?? "").trim(),
+      bio: String(body.bio ?? "").trim() || undefined,
+      location: String(body.location ?? "").trim() || undefined,
       available: Boolean(body.available),
       hiring: Boolean(body.hiring),
       investing: Boolean(body.investing),
@@ -208,10 +248,11 @@ export async function PATCH(req: Request) {
       discord: String(body.discord ?? "").trim() || undefined,
     };
 
+    // Upsert por userId (no por username)
     const saved = await prisma.profile.upsert({
-      where: { username: handle }, // 👈 requiere UNIQUE en schema
+      where: { userId },                // requiere @unique en Prisma
       update: data,
-      create: { username: handle, ...data },
+      create: { userId, ...data },
       select: SELECT,
     });
 

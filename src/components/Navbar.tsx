@@ -30,7 +30,8 @@ export default function Navbar({ hideLinks = false }: Props) {
           {status === "authenticated" ? (
             <>
               {/* Ir a la página de edición de perfil */}
-              <Link href="/profile" className="btn-ghost">
+              <Link href="/profile/edit" className="btn-ghost">
+
                 Mi Perfil
               </Link>
               <button
