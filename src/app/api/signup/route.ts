@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // ajusta a ruta relativa si no usas alias
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  name: z.string().optional(),
+  email: z
+    .string()
+    .min(1, "El correo es obligatorio.")
+    .email("Correo inválido."),
+  password: z
+    .string()
+    .min(1, "La contraseña es obligatoria.")
+    .min(8, "Su contraseña debe ser mayor a 8 caracteres."),
+  name: z.string().trim().optional(),
 });
-
-function getErrorMessage(err: unknown) {
-  if (err instanceof Error) return err.message;
-  try {
-    return JSON.stringify(err);
-  } catch {
-    return String(err);
-  }
-}
 
 export async function POST(req: Request) {
   try {
@@ -43,10 +40,12 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true, user });
-  } catch (err: unknown) {
-    return NextResponse.json(
-      { error: getErrorMessage(err) || "Registro fallido" },
-      { status: 400 }
-    );
+  } catch (err) {
+    if (err instanceof ZodError) {
+      // Devuelve solo el primer mensaje corto
+      const msg = err.issues[0]?.message ?? "Datos inválidos.";
+      return NextResponse.json({ error: msg }, { status: 400 });
+    }
+    return NextResponse.json({ error: "Registro fallido." }, { status: 400 });
   }
 }
