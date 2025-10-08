@@ -105,7 +105,7 @@ export default function DirectoryPage() {
             Shipyard <span className="text-[color:var(--brand-neon)]">HUB</span>
           </h2>
           <p className="text-white/60">
-            Descubre y conecta con profesionales cripto.
+            Explora el directorio de talento del ecosistema. Encuentra skills, conecta con builders y lleva tu proyecto más lejos.
           </p>
         </div>
 

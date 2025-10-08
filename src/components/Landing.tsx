@@ -62,14 +62,13 @@ export default function Landing() {
 
         <div className="center-block">
           <h1 className="font-extrabold text-[56px] md:text-[68px] leading-[1.05] tracking-[-0.02em]">
-            Conecta con <span className="text-brand">Profesionales</span>
+            Conecta con <span className="text-brand">Builders</span>
           </h1>
           <h2 className="font-extrabold text-[56px] md:text-[68px] leading-[1.03] -mt-2 tracking-[-0.02em]">
             <span className="text-brand"></span>
           </h2>
           <p className="mt-6 text-lg md:text-xl text-white/70">
-          El centro de networking definitivo para creadores, fundadores, desarrolladores e inversores en el sector cripto.
-          Encuentra colaboradores, descubre oportunidades y amplía tu red.
+          El espacio para founders, devs e inversionistas que están creando en cripto. Encuentra aliados, comparte visión y construye el futuro juntos.
           </p>
         </div>
       </header>
@@ -82,7 +81,7 @@ export default function Landing() {
           </div>
           <h3 className="font-semibold text-lg mb-2">Conecta con expertos</h3>
           <p className="text-white/70">
-            Accede a un directorio curado de profesionales verificados en todas las disciplinas.
+            Descubre builders y mentores con experiencia real, listos para impulsar tu proyecto.
           </p>
         </div>
 
@@ -92,7 +91,7 @@ export default function Landing() {
           </div>
           <h3 className="font-semibold text-lg mb-2">Haz crecer tu red</h3>
           <p className="text-white/70">
-            Encuentra colaboradores, mentores y socios para tus proyectos.
+            Encuentra co-founders, colaboradores e inversionistas que sumen poder a tu idea.
           </p>
         </div>
 
@@ -102,7 +101,7 @@ export default function Landing() {
           </div>
           <h3 className="font-semibold text-lg mb-2">Comunidad Global</h3>
           <p className="text-white/70">
-            Únete a profesionales de todo el mundo construyendo el futuro descentralizado.
+            Conecta con builders de todo el mundo y escala tu visión sin fronteras.
           </p>
         </div>
       </section>
