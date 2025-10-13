@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 /** Acepta inglés (valores internos) y español (etiquetas del select) */
 type CategoryOption =
   | "Builder" | "Founder" | "Developer" | "Designer" | "Investor" | "Marketer" | "ContentCreator" | "Other"
-  | "Desarrollador" | "Diseñador" | "Inversionista" | "Creador de contenido" | "Otro";
+  | "Desarrollador" | "Diseñador" | "Inversionista" | "Creador de contenido" | "Mentor"| "Legal"| "Otro";
 
 type Form = {
   username: string;
@@ -54,6 +54,8 @@ const roleToEs: Record<string, CategoryOption> = {
   Investor: "Inversionista",
   Marketer: "Marketer",
   ContentCreator: "Creador de contenido",
+  Mentor: "Mentor",
+  Legal: "Legal",
   Other: "Otro",
 };
 
@@ -154,6 +156,8 @@ export default function EditProfilePage() {
       Investor: "Investor",
       Marketer: "Marketer",
       ContentCreator: "ContentCreator",
+      Mentor: "Mentor",
+      Legal: "Legal",
       Other: "Other",
     };
     return (c: CategoryOption) => esToEn[c] ?? c;
@@ -275,6 +279,8 @@ export default function EditProfilePage() {
                   <option>Inversionista</option>
                   <option>Marketer</option>
                   <option>Creador de contenido</option>
+                  <option>Mentor</option>
+                  <option>Legal</option>
                   <option>Otro</option>
                 </select>
 

@@ -65,6 +65,8 @@ enum Category {
   Investor
   Marketer
   ContentCreator
+  Mentor
+  Legal
   Other
 }
 

@@ -6,10 +6,10 @@ import { prisma } from "@/lib/prisma";
 
 type Role =
   | "Builder" | "Founder" | "Developer" | "Designer"
-  | "Investor" | "Marketer" | "ContentCreator" | "Other";
+  | "Investor" | "Marketer" | "ContentCreator"| "Mentor"| "Legal" | "Other";
 
 const VALID: ReadonlySet<Role> = new Set([
-  "Builder","Founder","Developer","Designer","Investor","Marketer","ContentCreator","Other",
+  "Builder","Founder","Developer","Designer","Investor","Marketer","ContentCreator", "Mentor", "Legal", "Other",
 ]);
 
 function roleOf(v: unknown): Role {
@@ -22,7 +22,7 @@ function roleOf(v: unknown): Role {
     "Creador de Contenido": "ContentCreator",
     Otro: "Other",
     Builder:"Builder", Founder:"Founder", Developer:"Developer", Designer:"Designer",
-    Investor:"Investor", Marketer:"Marketer", ContentCreator:"ContentCreator", Other:"Other",
+    Investor:"Investor", Marketer:"Marketer", ContentCreator:"ContentCreator", Mentor:"Mentor", Legal:"Legal", Other:"Other",
   };
   const r = (map[raw] ?? raw) as Role;
   return VALID.has(r) ? r : "Developer";

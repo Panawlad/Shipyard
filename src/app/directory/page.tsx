@@ -154,6 +154,12 @@ export default function DirectoryPage() {
               <option value="ContentCreator" className="bg-[color:var(--brand-dark)]">
                 Creador de contenido
               </option>
+              <option value="Mentor" className="bg-[color:var(--brand-dark)]">
+                Mentor
+              </option>
+              <option value="Legal" className="bg-[color:var(--brand-dark)]">
+                Legal
+              </option>
               <option value="Other" className="bg-[color:var(--brand-dark)]">
                 Otro
               </option>

@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 // Acepta inglés (roles internos) y español (etiquetas del select)
 type CategoryOption =
   | "Builder" | "Founder" | "Developer" | "Designer" | "Investor" | "Marketer" | "ContentCreator" | "Other"
-  | "Desarrollador" | "Diseñador" | "Inversionista" | "Creador de contenido" | "Otro";
+  | "Desarrollador" | "Diseñador" | "Inversionista" | "Creador de contenido" | "Mentor"| "Legal"| "Otro";
 
 type Form = {
   username: string;
@@ -199,6 +199,8 @@ export default function CreateProfilePage() {
                   <option>Inversionista</option>
                   <option>Marketer</option>
                   <option>Creador de contenido</option>
+                  <option>Mentor</option>
+                  <option>Legal</option>
                   <option>Otro</option>
                 </select>
                 <span

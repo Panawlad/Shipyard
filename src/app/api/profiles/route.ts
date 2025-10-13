@@ -13,6 +13,8 @@ type Role =
   | "Investor"
   | "Marketer"
   | "ContentCreator"
+  | "Mentor"
+  | "Legal"
   | "Other";
 
 /** Lo que consume el front */
@@ -42,6 +44,8 @@ const VALID_ROLES: ReadonlySet<Role> = new Set([
   "Investor",
   "Marketer",
   "ContentCreator",
+  "Mentor",
+  "Legal",
   "Other",
 ]);
 
@@ -64,6 +68,8 @@ function normalizeRole(input: unknown): Role {
     Investor: "Investor",
     Marketer: "Marketer",
     ContentCreator: "ContentCreator",
+    Mentor: "Mentor",
+    Legal: "Legal",
     Other: "Other",
   };
   const candidate = (map[raw] ?? raw) as Role;
